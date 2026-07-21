@@ -3,6 +3,7 @@ set -euo pipefail
 
 usage() {
   printf 'Usage: %s <feature-name>\n' "$(basename "$0")" >&2
+  printf 'Run from the root of the project where the feature should be created.\n' >&2
 }
 
 if [[ $# -ne 1 ]]; then
@@ -20,10 +21,10 @@ if [[ -z "$slug" ]]; then
   exit 2
 fi
 
-script_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
-feature_root="$script_dir/.codex/features"
-prd_template="$script_dir/.agents/skills/prd/assets/PRD_template.md"
-tdd_template="$script_dir/.agents/skills/tdd/assets/TDD_template.md"
+repository_root=$(pwd -P)
+feature_root="$repository_root/.codex/features"
+prd_template="$repository_root/.agents/skills/prd/assets/PRD_template.md"
+tdd_template="$repository_root/.agents/skills/tdd/assets/TDD_template.md"
 
 for template in "$prd_template" "$tdd_template"; do
   if [[ ! -f "$template" ]]; then
@@ -54,4 +55,4 @@ created_target=0
 trap - EXIT INT TERM
 
 printf 'Created %s\n' "$target"
-printf 'Next: start codex at %s and invoke $prd %s <feature brief>\n' "$script_dir" "$slug"
+printf 'Next: start codex at %s and invoke $prd with the feature brief.\n' "$repository_root"

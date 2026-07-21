@@ -1,6 +1,6 @@
 ---
 name: tdd
-description: Generate an implementation-ready technical design and complete test design from an approved PRD after inspecting the current repository. Use only when explicitly invoked as $tdd with a path to PRD.md; may delegate zero to three bounded read-only investigations and edits only the sibling TDD.md.
+description: Infer the intended existing Codex feature and generate an implementation-ready technical design and complete test design from its approved PRD after inspecting the repository. Use only when explicitly invoked as $tdd with a feature name, description, path, or sufficient conversational context; may delegate zero to three bounded read-only investigations and edits only that feature's TDD.md.
 ---
 
 # Generate a TDD
@@ -9,11 +9,14 @@ Read `references/design-protocol.md` and `assets/TDD_template.md` before writing
 
 ## Validate inputs
 
-1. Resolve the PRD and sibling TDD paths under `.codex/features/`.
-2. Require `status: approved`, a valid immutable `content_revision`, and no open `BLOCKER` in the PRD.
-3. Run `python3 scripts/validate_artifact.py <PRD-path> --phase approved`.
-4. Read applicable `AGENTS.md`, the full PRD, repository status, manifests, architecture, relevant code, tests, schemas, migrations, CI, and operational configuration.
-5. Capture the exact repository revision. Treat meaningful drift during design as a reason to re-check affected sections.
+1. Resolve the repository root and enumerate immediate child directories of `.codex/features/` that contain sibling `PRD.md` and `TDD.md` files.
+2. Infer the intended feature from, in order of strength, an explicit in-tree artifact path or exact slug, the invocation text, the current conversation, and the PRD titles and summaries. Never select by modification time or directory ordering alone.
+3. Proceed only when exactly one feature is a clear semantic match. If none or multiple remain plausible, ask one concise follow-up that lists the candidate slugs; do not read, edit, or combine their artifacts beyond the minimum needed to disambiguate.
+4. Bind the PRD and TDD paths to that one feature directory for the entire run, state the selected slug before design, reject any artifact path outside it, and never use another feature's PRD or TDD as design authority or evidence.
+5. Require `status: approved`, a valid immutable `content_revision`, and no open `BLOCKER` in the PRD.
+6. Run `python3 scripts/validate_artifact.py <PRD-path> --phase approved`.
+7. Read applicable `AGENTS.md`, the full PRD, repository status, manifests, architecture, relevant code, tests, schemas, migrations, CI, and operational configuration.
+8. Capture the exact repository revision. Treat meaningful drift during design as a reason to re-check affected sections.
 
 ## Investigate
 
@@ -33,4 +36,4 @@ Set `status: approved` only when the readiness gate passes and the user has reso
 
 ## Return
 
-Report the TDD path, selected design, delegated investigations, blockers, validation status, and exact next invocation: `$implement <path-to-TDD.md>`. Recommend a fresh session in the same worktree; recommend a new worktree only after both approved documents are committed or copied there.
+Report the selected feature slug, TDD path, selected design, delegated investigations, blockers, validation status, and exact next invocation: `$implement <feature name or description>`. Recommend a fresh session in the same worktree; recommend a new worktree only after both approved documents are committed or copied there.

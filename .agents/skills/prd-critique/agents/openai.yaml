@@ -1,7 +1,7 @@
 interface:
   display_name: "PRD Critique"
-  short_description: "Critique and revise a PRD against the codebase"
-  default_prompt: "Use $prd-critique to audit and revise this PRD against the repository."
+  short_description: "Infer and critique the intended feature PRD"
+  default_prompt: "Use $prd-critique to infer the feature I mean and audit its PRD."
 
 policy:
   allow_implicit_invocation: false

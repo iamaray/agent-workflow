@@ -1,7 +1,7 @@
 interface:
   display_name: "Implement TDD"
-  short_description: "Implement, verify, and commit an approved TDD"
-  default_prompt: "Use $implement to implement and commit the approved TDD."
+  short_description: "Infer and implement the intended feature TDD"
+  default_prompt: "Use $implement to infer the feature I mean and implement its approved TDD."
 
 policy:
   allow_implicit_invocation: false

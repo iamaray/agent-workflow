@@ -1,20 +1,21 @@
 ---
 name: prd
-description: Interview the user and generate a product requirements document for a feature workspace created by new_feature.sh. Use only when explicitly invoked as $prd with a feature slug and optional brief; create or revise that feature's PRD.md without designing or implementing the solution.
+description: Infer a new feature name from the user's brief, create its Codex feature workspace with codex-new-feature, interview the user, and write its PRD. Use only when explicitly invoked as $prd with a feature description; never design or implement the solution.
 ---
 
 # Generate a PRD
 
-Treat the first argument as the feature slug and the remaining text as the initial brief.
+Treat all text accompanying the invocation as the initial feature brief, not as a required slug.
 
-## Resolve inputs
+## Create the feature workspace
 
-1. Resolve the repository root from the current working directory.
-2. Open `.codex/features/<slug>/PRD.md`; require the sibling `TDD.md` to exist, but do not edit it.
-3. Read `assets/PRD_template.md` and `references/interview.md` from this skill.
-4. Read applicable `AGENTS.md` files. Inspect code only when needed to describe current user-visible behavior; leave feasibility analysis to `$prd-critique`.
-
-If the slug is missing, the feature directory is missing, or the feature brief is empty, ask for the missing input before writing.
+1. Resolve the repository root from the current working directory, read applicable `AGENTS.md` files, and operate from that root.
+2. Infer one short, distinguishing feature name from the brief. Use the user's product terminology; do not ask the user to supply a slug when a clear name can be inferred.
+3. If the brief is missing or could reasonably describe multiple distinct features, ask one concise follow-up before creating anything.
+4. Predict the normalized slug and check `.codex/features/<slug>`. Never overwrite or adopt a pre-existing directory during `$prd`; if it exists, ask whether the user wants a different feature name or intended to continue that existing feature with another skill.
+5. Snapshot the existing immediate child directories of `.codex/features/`, then run `codex-new-feature "<inferred feature name>"` yourself from the repository root. If the shell cannot resolve the alias non-interactively, invoke the same command through the user's interactive login shell so the alias is loaded. Do not reproduce its `mkdir` or template-copying behavior manually. If the command is unavailable or fails, report the exact error and do not create a substitute workspace.
+6. Compare the directory list and verify that the command created exactly the predicted directory with sibling `PRD.md` and `TDD.md`; bind the rest of this run to those files and never switch feature directories.
+7. Read `assets/PRD_template.md` and `references/interview.md` from this skill. Inspect code only when needed to describe current user-visible behavior; leave feasibility analysis to `$prd-critique`.
 
 ## Interview
 
@@ -33,5 +34,4 @@ Continue until all product decisions needed for a reviewable PRD are answered or
 
 ## Return
 
-Report the PRD path, scope summary, unresolved OQ-IDs, validation result, and the exact next invocation: `$prd-critique <path-to-PRD.md>`.
-
+Report the selected feature slug, PRD path, scope summary, unresolved OQ-IDs, validation result, and the exact next invocation: `$prd-critique <feature name or description>`.
