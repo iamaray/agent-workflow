@@ -1,23 +1,23 @@
 ---
 name: prd
-description: Interview the user and generate a product requirements document for a feature workspace created by new_feature.sh. Use when the user invokes /prd with a feature slug and optional brief; create or revise that feature's PRD.md without designing or implementing the solution.
-argument-hint: <slug> [feature brief]
+description: Interview the user and generate a product requirements document. Use when the user invokes /prd with a feature brief; infer a feature slug from the brief, scaffold the workspace with claude-new-feature, then create or revise only that feature's PRD.md without designing or implementing the solution.
+argument-hint: <feature brief>
 disable-model-invocation: true
 user-invocable: true
 ---
 
 # Generate a PRD
 
-Treat the first argument as the feature slug and the remaining text as the initial brief.
+Treat the entire argument as the feature brief.
 
-## Resolve inputs
+## Resolve the feature
 
 1. Resolve the repository root from the current working directory.
-2. Open `.claude/features/<slug>/PRD.md`; require the sibling `TDD.md` to exist, but do not edit it.
-3. Read `assets/PRD_template.md` and `references/interview.md` from this skill.
-4. Read applicable `CLAUDE.md` files. Inspect code only when needed to describe current user-visible behavior; leave feasibility analysis to `/prd-critique`.
-
-If the slug is missing, the feature directory is missing, or the feature brief is empty, ask for the missing input before writing.
+2. Infer a concise, valid feature slug (lowercase, hyphen-separated) that names the feature described in the brief. If the brief is empty or too vague to name a feature, ask the user for a one-line description before continuing. Report the chosen slug.
+3. If `.claude/features/<slug>/` does not exist, scaffold it by running `./claude-new-feature.sh <slug>` from the repository root; this creates the feature's `PRD.md` and `TDD.md`. If the directory already exists, reuse it and revise its `PRD.md` in place rather than re-scaffolding.
+4. Open only `.claude/features/<slug>/PRD.md`; require the sibling `TDD.md` to exist, but do not edit it. Read from and write to nothing under any other feature folder.
+5. Read `assets/PRD_template.md` and `references/interview.md` from this skill.
+6. Read applicable `CLAUDE.md` files. Inspect code only when needed to describe current user-visible behavior; leave feasibility analysis to `/prd-critique`.
 
 ## Interview
 
@@ -36,4 +36,4 @@ Continue until all product decisions needed for a reviewable PRD are answered or
 
 ## Return
 
-Report the PRD path, scope summary, unresolved OQ-IDs, validation result, and the exact next invocation: `/prd-critique <path-to-PRD.md>`.
+Report the resolved feature slug, the PRD path, scope summary, unresolved OQ-IDs, validation result, and the exact next invocation: `/prd-critique <feature>` (the feature name or the path to its `PRD.md`).

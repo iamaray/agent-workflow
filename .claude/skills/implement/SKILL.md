@@ -1,7 +1,7 @@
 ---
 name: implement
-description: Plan privately, implement, verify, document, and commit an approved TDD in the current repository. Use when the user invokes /implement with a path to TDD.md; may use zero to two bounded read-only subagents, must preserve unrelated work, and never pushes or deploys.
-argument-hint: <path-to-TDD.md>
+description: Plan privately, implement, verify, document, and commit an approved TDD in the current repository. Use when the user invokes /implement with a feature name or a path to TDD.md; may use zero to two bounded read-only subagents, must preserve unrelated work, and never pushes or deploys.
+argument-hint: <feature> (name or path to TDD.md)
 disable-model-invocation: true
 user-invocable: true
 ---
@@ -12,7 +12,7 @@ Read `references/implementation-protocol.md` before editing.
 
 ## Gate the work
 
-1. Resolve the TDD and sibling PRD under `.claude/features/`.
+1. Identify the target feature from the user's description: accept a path to `TDD.md`, a feature slug, or a natural-language feature name (slugify it and match against the directories under `.claude/features/`). Resolve to exactly one `.claude/features/<slug>/` workspace, then use its `TDD.md` and sibling `PRD.md`. If the description names no feature, matches none, or matches more than one, list the available features under `.claude/features/` and ask which one before proceeding. Work only within the resolved feature folder; never read or modify another feature's documents.
 2. Validate both approved artifacts and their immutable revisions with `python3 scripts/validate_artifact.py <path> --phase approved`.
 3. Confirm the TDD's PRD revision matches the current PRD and its repository baseline is compatible with the current `HEAD`.
 4. Read applicable `CLAUDE.md`, the full documents, current Git status, and every cited path.

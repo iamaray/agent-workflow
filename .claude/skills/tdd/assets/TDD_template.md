@@ -131,7 +131,7 @@ Describe only the relevant current path through the system.
 
 | Concern | Observed convention or command | Source |
 |---|---|---|
-| Agent instructions | [Applicable AGENTS.md or equivalent] | `[path]` |
+| Agent instructions | [Applicable CLAUDE.md or equivalent] | `[path]` |
 | Language/runtime | [Language and exact version] | `[manifest/config path]` |
 | Package/build system | [Tool and workspace layout] | `[path]` |
 | Architecture pattern | [Observed pattern] | `[representative path]` |
