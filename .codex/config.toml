@@ -1,0 +1,6 @@
+# Project-local Codex settings. Model and permission choices inherit from the user/session.
+
+[agents]
+max_threads = 5
+max_depth = 1
+

@@ -1,0 +1,7 @@
+interface:
+  display_name: "PRD"
+  short_description: "Interview and generate an implementation-ready PRD"
+  default_prompt: "Use $prd to interview me and create a PRD for this feature."
+
+policy:
+  allow_implicit_invocation: false

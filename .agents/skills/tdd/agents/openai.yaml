@@ -1,0 +1,7 @@
+interface:
+  display_name: "TDD"
+  short_description: "Design an implementation-ready TDD from a PRD"
+  default_prompt: "Use $tdd to inspect the repository and create a TDD from this PRD."
+
+policy:
+  allow_implicit_invocation: false

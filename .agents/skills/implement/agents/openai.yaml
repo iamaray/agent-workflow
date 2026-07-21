@@ -1,0 +1,7 @@
+interface:
+  display_name: "Implement TDD"
+  short_description: "Implement, verify, and commit an approved TDD"
+  default_prompt: "Use $implement to implement and commit the approved TDD."
+
+policy:
+  allow_implicit_invocation: false
