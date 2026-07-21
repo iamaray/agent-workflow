@@ -1,0 +1,7 @@
+interface:
+  display_name: "Finetune Loop"
+  short_description: "Attune workflow skills and agents to a project"
+  default_prompt: "Use $finetune-loop to inspect this repository and add durable project-specific context to the workflow skills and Codex agents."
+
+policy:
+  allow_implicit_invocation: false

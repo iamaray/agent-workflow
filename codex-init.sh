@@ -54,3 +54,4 @@ cp -R -- "$script_dir/.codex" "$target_dir/.codex"
 cp -- "$script_dir/AGENTS.md" "$target_dir/AGENTS.md"
 
 printf 'Copied .agents, .codex, and AGENTS.md into %s\n' "$target_dir"
+printf 'Next: review AGENTS.md for this project, then invoke $finetune-loop from the project root.\n'
